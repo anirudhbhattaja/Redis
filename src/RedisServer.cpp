@@ -33,7 +33,7 @@ void RedisServer::shutdown(){
 }
 
 void RedisServer::run(){
-    server_socket = socket(AF_INET,SOCK_STREAM, 0);
+    server_socket = socket(AF_INET,SOCK_STREAM, 0); //Use IPv4,use tcp, default is 0 for tcp
     if (server_socket < 0){
         std::cerr<<"Error creating server socket, less than 1\n";
         return;
@@ -41,11 +41,16 @@ void RedisServer::run(){
 
     int opt = 1;
     setsockopt(server_socket,SOL_SOCKET,SO_REUSEADDR, &opt ,sizeof(opt));
+    //the socket you created,level of the option in this case socket, allows socket to bind to an address that was recently used, pointer to value to set, lenght of value
+    
+    //We are using the above because this way we can avoid errors if we restart server quickly
     sockaddr_in serverAddr{};
     serverAddr.sin_family = AF_INET;
     serverAddr.sin_port = htons(port);
     serverAddr.sin_addr.s_addr = INADDR_ANY;
 
+
+    //We use this to tell that we want our socket to listen on this port and address
     if (bind(server_socket,(struct sockaddr*)&serverAddr, sizeof(serverAddr))<0){
         std::cerr<<"Error binding server socket\n";
         return;
