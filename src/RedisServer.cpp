@@ -90,7 +90,7 @@ void RedisServer::run(){
                 std::string response = cmdHanlder.processCommand(request);
                 send(client_socket,response.c_str(),response.size(),0);
             }
-            close(client_socket);
+            CLOSE_SOCKET(client_socket);
         });
     }
 
