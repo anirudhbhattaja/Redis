@@ -87,6 +87,7 @@ void RedisServer::run(){
                     break;
                 }
                 std::string request(buffer, bytes);
+                std::cout << "[Server] Received command from client: " << request << std::endl;
                 std::string response = cmdHanlder.processCommand(request);
                 send(client_socket,response.c_str(),response.size(),0);
             }

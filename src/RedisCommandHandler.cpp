@@ -57,15 +57,21 @@ RedisCommandHandler::RedisCommandHandler(){};
 
 std::string RedisCommandHandler::processCommand(const std::string& commandLine){
     auto tokens = parseRespCommand(commandLine);
-    if(tokens.empty()) return "Empty hote command\r\n";
-
-    for(auto&t : tokens){
-        std::cout<<t<<"\'n";
+    if(tokens.empty()) {
+        std::cout << "[CommandHandler] Received empty command from client." << std::endl;
+        return "Empty hote command\r\n";
     }
+
+    //std::cout << "[CommandHandler] Parsed command tokens: ";
+    std::cout << tokens.size();
+    for(auto&t : tokens){
+        std::cout << t << " ";
+    }
+    std::cout << std::endl;
 
     std::string cmd = tokens[0];
     std::transform(cmd.begin(),cmd.end(),cmd.begin(), ::toupper);
     std::ostringstream response;
-
+    response << "+OK\r\n";
     return response.str();
 }
