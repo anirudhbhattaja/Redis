@@ -2,6 +2,11 @@
 #define REDIS_DATABASE_H
 
 #include <string>
+#include<vector>
+#include <mutex>
+#include<fstream>
+#include<unordered_map>
+#include <sstream>
 
 class RedisDatabase{
     public:
@@ -17,6 +22,15 @@ class RedisDatabase{
         ~RedisDatabase() = default;
         RedisDatabase(const RedisDatabase&) = delete;
         RedisDatabase& operator = (const RedisDatabase&) = delete;
+
+        std::mutex db_mutex;
+        //simple key value pairs
+        std::unordered_map<std::string,std::string> kv_store;
+        //sotres list, key - array pairs
+        std::unordered_map<std::string,std::vector<std::string>> list_store;
+        //stores hash map itself, key - hashmap pairs
+        std::unordered_map<std::string,std::unordered_map<std::string,std::string>> hash_store;
+        
 
 
 };

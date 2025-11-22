@@ -62,16 +62,30 @@ std::string RedisCommandHandler::processCommand(const std::string& commandLine){
         return "Empty hote command\r\n";
     }
 
+    //Debugging
+
     //std::cout << "[CommandHandler] Parsed command tokens: ";
-    std::cout << tokens.size();
-    for(auto&t : tokens){
-        std::cout << t << " ";
-    }
-    std::cout << std::endl;
+    // std::cout << tokens.size();
+    // for(auto&t : tokens){
+    //     std::cout << t << " ";
+    // }
+    // std::cout << std::endl;
 
     std::string cmd = tokens[0];
     std::transform(cmd.begin(),cmd.end(),cmd.begin(), ::toupper);
     std::ostringstream response;
-    response << "+OK\r\n";
+    
+    if (cmd == "PING"){
+        response << "+PONG\r\n";
+    }
+    else if (cmd == "ECHO"){
+        response << "+ECHO....\r\n";
+    }
+
+
+
+    else{
+        response << "-Error: Unkown command\r\n";
+    }
     return response.str();
 }
