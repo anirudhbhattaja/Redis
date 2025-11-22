@@ -3,6 +3,7 @@
 #include <thread>
 #include <chrono>
 #include "../include/RedisServer.h"
+#include "../include/RedisDatabase.h"
 
 int main(int argc, char* argv[]){
     int port = 6379;
@@ -16,9 +17,12 @@ int main(int argc, char* argv[]){
     std::thread persistenceThread([](){
         while(true){
             std::this_thread::sleep_for(std::chrono::seconds(300));
-            // if(!RedisDatabase){
-
-            // }
+            if(!RedisDatabase::getInstance().dump("dump.my_rdb")){
+                std::cerr << "Error dumping the database \n";
+            }
+            else{
+                std::cout<<"Databse dumped to dump.my_rdb\n";
+            }
         }
     });
     persistenceThread.detach();
