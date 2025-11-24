@@ -46,6 +46,14 @@ RedisServer::RedisServer(int port) : port(port), server_socket(-1), running(true
 void RedisServer::shutdown(){
     running = false;
     if (server_socket != -1){
+
+        //Making the database persist before shutdown
+            if (RedisDatabase::getInstance().dump("dump.my_rdb")){
+                std::cout<<"Database dumped succesfully to dump.my_rd \n";
+            }
+            else{
+                std::cerr << "Error dumping database\n";
+            }
         CLOSE_SOCKET(server_socket);
     }
     std::cout<<"Shutting down server running on "<<server_socket<<"\n";

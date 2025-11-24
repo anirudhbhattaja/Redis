@@ -7,11 +7,25 @@
 #include<fstream>
 #include<unordered_map>
 #include <sstream>
+#include <chrono>
 
 class RedisDatabase{
     public:
         //Get the singleton instance
         static RedisDatabase & getInstance();
+
+        //Common Commands
+        bool flushAll();
+
+        //key value ops
+        void set(const std::string& key, const std::string& value);
+        bool get(const std::string&key, std::string& value);
+        std::vector<std::string> keys();
+        std::string type(const std::string& key);
+        bool del(const std::string& key);
+        bool expire(const std::string& key,const int& seconds);
+        bool rename(const std::string& oldKey,const std::string& newKey);
+
 
         //Persistance : Dump / load the database from and to memeory using file
         bool dump(const std::string& filename);
@@ -31,6 +45,7 @@ class RedisDatabase{
         //stores hash map itself, key - hashmap pairs
         std::unordered_map<std::string,std::unordered_map<std::string,std::string>> hash_store;
         
+        std::unordered_map<std::string,std::chrono::steady_clock::time_point> expiry_map;
 
 
 };

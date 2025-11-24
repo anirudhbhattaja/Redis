@@ -10,13 +10,19 @@ int main(int argc, char* argv[]){
     if (argc >= 2 ){
         port = std::stoi(argv[1]);
     }
+
+    if(RedisDatabase::getInstance().load("dump.my_rdb"))
+    {
+        std::cout << "Databse loaded from dump.myrdb";
+    }
+
     RedisServer server(port);
 
     //Dump every 5 mins
 
     std::thread persistenceThread([](){
         while(true){
-            std::this_thread::sleep_for(std::chrono::seconds(300));
+            std::this_thread::sleep_for(std::chrono::seconds(30));
             if(!RedisDatabase::getInstance().dump("dump.my_rdb")){
                 std::cerr << "Error dumping the database \n";
             }
