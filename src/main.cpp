@@ -22,7 +22,7 @@ int main(int argc, char* argv[]){
 
     std::thread persistenceThread([](){
         while(true){
-            std::this_thread::sleep_for(std::chrono::seconds(30));
+            std::this_thread::sleep_for(std::chrono::seconds(300));
             if(!RedisDatabase::getInstance().dump("dump.my_rdb")){
                 std::cerr << "Error dumping the database \n";
             }

@@ -223,3 +223,5 @@ bool RedisDatabase::rename(const std::string& oldKey,const std::string& newKey){
 
 }
 
+
+//List operations
