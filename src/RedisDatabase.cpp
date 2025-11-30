@@ -238,7 +238,7 @@ ssize_t RedisDatabase::llen(const std::string& key){
 
 void RedisDatabase::lpush(const std::string& key, const std::string& value){
     std::lock_guard<std::mutex> lock(db_mutex);
-    auto it = list_store.find(key);
+    //auto it = list_store.find(key);
     list_store[key].insert(list_store[key].begin(),value);
 }
 
@@ -313,6 +313,7 @@ int RedisDatabase::lrem(const std::string& key, int count,const std::string& val
         }
 
     }
+    return removed;
 }
 bool RedisDatabase::lindex(const std::string& key, int index, std:: string& value){
     std::lock_guard<std::mutex> lock(db_mutex);
@@ -321,10 +322,11 @@ bool RedisDatabase::lindex(const std::string& key, int index, std:: string& valu
         return false;
     }
     const auto& lst = it-> second;
+    int lsize = static_cast<int>(lst.size());
     if(index < 0){
         index = lst.size() + index;
     }
-    if(index < 0 || static_cast<ssize_t>(index) >= lst.size()){
+    if(index < 0 || static_cast<ssize_t>(index) >= lsize){
         return false;
     }
 
@@ -338,10 +340,11 @@ bool RedisDatabase::lset(const std::string& key, int index,const std:: string& v
         return false;
     }
     auto& lst = it->second;
+    int lsize = static_cast<int>(lst.size());
     if (index < 0){
         index = lst.size() + index;
     }
-    if(index < 0 || static_cast<ssize_t>(index) >= lst.size()){
+    if(index < 0 || static_cast<ssize_t>(index) >= lsize){
         return false;
     }
     return true;

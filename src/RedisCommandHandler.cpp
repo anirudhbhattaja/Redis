@@ -196,7 +196,7 @@ static std::string handleLrem(const std::vector<std::string>& tokens, RedisDatab
         int removed = db.lrem(tokens[1],count,tokens[3]);
         return":" + std::to_string(removed) + "\r\n";
     }
-    catch (const std::exception){
+    catch (const std::exception&){
         return "-Error: Invalid count\r\n";
     }
 }
